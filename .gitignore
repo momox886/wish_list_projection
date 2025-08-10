@@ -1,4 +1,3 @@
 .venv/
-app/whishlist.db
 instance/
-
+app/wishlist.db
