@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wishlist & Cagnotte</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animations custom */
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 8px rgba(99, 102, 241, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 1);
+      }
+    }
+    .pulse-glow {
+      animation: pulse-glow 2.5s infinite;
+    }
+    .progress-bar {
+      transition: width 1s ease-in-out;
+    }
+    /* Input focus glow */
+    input:focus, button:focus {
+      outline: none;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.7);
+      border-color: #6366f1;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-indigo-700 to-indigo-800 min-h-screen flex flex-col text-indigo-100 font-sans">
+
+  <header class="bg-indigo-900/90 backdrop-blur-md shadow-lg py-6 border-b border-indigo-700">
+    <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-center md:justify-between">
+      <h1 class="text-4xl font-extrabold tracking-widest uppercase drop-shadow-lg select-none flex items-center gap-3">
+        <span class="text-indigo-400 animate-pulse">🎯</span> Ma Wishlist
+      </h1>
+      <p class="mt-3 md:mt-0 text-indigo-300 max-w-lg text-center md:text-left">
+        Ajoute des objets, fais grandir ta cagnotte, atteins ton objectif !
+      </p>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-5xl mx-auto px-6 py-10 space-y-10">
+
+    <!-- Liste des objets -->
+    <section class="bg-indigo-900/70 rounded-xl shadow-xl p-8 border border-indigo-700">
+      <h2 class="text-3xl font-bold mb-6 text-indigo-300 tracking-wide border-b border-indigo-600 pb-2">Objets</h2>
+      {% if wishlist %}
+      <ul class="divide-y divide-indigo-700 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-indigo-900">
+        {% for item in wishlist %}
+          <li class="flex items-center justify-between py-4 hover:bg-indigo-800 rounded-lg transition-colors duration-300 px-4">
+            <div>
+              <p class="font-semibold text-indigo-200 text-lg">{{ item.nom }}</p>
+              <p class="text-indigo-400 text-sm">{{ '%.2f' % item.prix }} €</p>
+            </div>
+            <a href="/delete_item/{{ item.id }}" 
+               class="text-red-500 hover:text-red-400 font-bold transition duration-300 select-none"
+               title="Supprimer cet objet">✕</a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="italic text-indigo-500 text-center py-10 select-none">Aucun objet pour l'instant, ajoute ton premier !</p>
+      {% endif %}
+
+      <div class="mt-8 flex justify-between items-center border-t border-indigo-700 pt-4 font-bold text-indigo-300 text-xl tracking-wide">
+        <span>Total :</span>
+        <span>{{ '%.2f' % total }} €</span>
+      </div>
+    </section>
+
+    <!-- Cagnotte -->
+    <section class="bg-indigo-900/70 rounded-xl shadow-xl p-8 border border-indigo-700 relative">
+      <h2 class="text-3xl font-bold mb-6 text-indigo-300 tracking-wide border-b border-indigo-600 pb-2">Cagnotte</h2>
+      <p class="text-indigo-200 mb-4 text-xl select-none">Montant actuel : <strong class="text-indigo-400">{{ '%.2f' % cagnotte }} €</strong></p>
+
+      <div class="w-full bg-indigo-800 rounded-full h-8 overflow-hidden shadow-inner border border-indigo-700">
+        <div
+          class="h-8 bg-indigo-500 progress-bar pulse-glow"
+          style="width: {{ (cagnotte / total * 100) if total > 0 else 0 }}%">
+        </div>
+      </div>
+
+      <p class="mt-3 text-indigo-400 font-semibold tracking-wide select-none">
+        {{ '%.0f' % ((cagnotte / total * 100) if total > 0 else 0) }}% atteint
+      </p>
+
+      {% if objectif_atteint %}
+        <p class="mt-6 text-green-400 font-extrabold text-2xl animate-pulse select-none">🎉 Objectif atteint ! Bravo !</p>
+      {% endif %}
+
+      <!-- Modifier le montant -->
+      <form method="POST" action="/edit_money" class="mt-8 flex flex-col sm:flex-row gap-4 max-w-sm mx-auto">
+        <input
+          type="number"
+          step="0.01"
+          name="nouveau_montant"
+          placeholder="Modifier montant (€)"
+          value="{{ '%.2f' % cagnotte }}"
+          required
+          class="flex-grow bg-indigo-800 text-indigo-100 border border-indigo-600 rounded-md px-4 py-3 placeholder-indigo-400 focus:ring-2 focus:ring-indigo-400 transition"
+          aria-label="Modifier le montant de la cagnotte"
+        />
+        <button
+          type="submit"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-3 rounded-md shadow-md transition-transform hover:scale-105 active:scale-95"
+          aria-label="Modifier le montant de la cagnotte"
+        >
+          Modifier
+        </button>
+      </form>
+    </section>
+
+    <!-- Formulaires -->
+    <section class="grid gap-10 md:grid-cols-2">
+
+      <!-- Ajouter un objet -->
+      <form method="POST" action="/add_item" class="bg-indigo-900/70 rounded-xl shadow-xl p-8 border border-indigo-700 space-y-6 transform hover:scale-[1.02] transition-transform duration-300">
+        <h3 class="text-2xl font-bold text-indigo-300 mb-4 tracking-wide">Ajouter un objet</h3>
+        <input
+          type="text"
+          name="nom"
+          placeholder="Nom de l'objet"
+          required
+          class="w-full bg-indigo-800 text-indigo-100 border border-indigo-600 rounded-md px-4 py-3 placeholder-indigo-400 focus:ring-2 focus:ring-indigo-400 transition"
+          aria-label="Nom de l'objet"
+        />
+        <input
+          type="number"
+          step="0.01"
+          name="prix"
+          placeholder="Prix (€)"
+          required
+          class="w-full bg-indigo-800 text-indigo-100 border border-indigo-600 rounded-md px-4 py-3 placeholder-indigo-400 focus:ring-2 focus:ring-indigo-400 transition"
+          aria-label="Prix de l'objet"
+        />
+        <button
+          type="submit"
+          class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-md shadow-md transition-transform hover:scale-105 active:scale-95"
+          aria-label="Ajouter un objet"
+        >
+          Ajouter
+        </button>
+      </form>
+
+      <!-- Ajouter de l'argent -->
+      <form method="POST" action="/add_money" class="bg-indigo-900/70 rounded-xl shadow-xl p-8 border border-indigo-700 space-y-6 transform hover:scale-[1.02] transition-transform duration-300">
+        <h3 class="text-2xl font-bold text-indigo-300 mb-4 tracking-wide">Ajouter de l'argent</h3>
+        <input
+          type="number"
+          step="0.01"
+          name="montant"
+          placeholder="Montant (€)"
+          required
+          class="w-full bg-indigo-800 text-indigo-100 border border-indigo-600 rounded-md px-4 py-3 placeholder-indigo-400 focus:ring-2 focus:ring-indigo-400 transition"
+          aria-label="Montant à ajouter"
+        />
+        <button
+          type="submit"
+          class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-md shadow-md transition-transform hover:scale-105 active:scale-95"
+          aria-label="Ajouter de l'argent"
+        >
+          Ajouter
+        </button>
+      </form>
+
+    </section>
+
+  </main>
+
+  <footer class="bg-indigo-900/80 text-indigo-400 text-center py-4 text-sm select-none border-t border-indigo-700">
+    Données stockées en base de données PostgreSQL - Projet Flask
+  </footer>
+
+</body>
+</html>

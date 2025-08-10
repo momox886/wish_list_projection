@@ -1,0 +1,73 @@
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#6366f1; /* violet doux */
+  --success:#16a34a;
+  --border: #e6e9ee;
+  --radius:12px;
+  --shadow: 0 6px 18px rgba(49,53,66,0.08);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:linear-gradient(180deg,var(--bg),#ffffff);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.container{
+  max-width:900px;
+  margin:32px auto;
+  padding:18px;
+}
+
+header h1{margin:0 0 6px 0;font-size:28px}
+.lead{margin:0;color:var(--muted)}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  margin-top:18px;
+}
+
+.wishlist-list{list-style:none;padding:0;margin:8px 0}
+.wishlist-list li{display:flex;justify-content:space-between;padding:10px 12px;border-radius:8px}
+.wishlist-list li:nth-child(odd){background:rgba(99,102,241,0.04)}
+.item-name{font-weight:600}
+.item-price{color:var(--muted)}
+
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:6px;border-top:1px dashed var(--border)}
+.total-value{font-size:1.1rem}
+
+.cagnotte-row{margin-top:12px}
+.cagnotte-info{display:flex;justify-content:space-between;align-items:center}
+.cagnotte-value{font-weight:700}
+
+.progress{width:100%;height:12px;background:#eef2ff;border-radius:999px;margin-top:8px;overflow:hidden;border:1px solid rgba(99,102,241,0.08)}
+.progress .bar{height:100%;background:linear-gradient(90deg,var(--accent),#8b5cf6);width:0%;transition:width 600ms ease}
+.percent{margin-top:8px;font-size:0.9rem;color:var(--muted)}
+
+.badge{display:inline-block;padding:8px 12px;border-radius:999px;margin-top:10px}
+.badge.success{background:rgba(22,163,74,0.12);color:var(--success);font-weight:700}
+
+.forms{display:grid;grid-template-columns:1fr;gap:12px}
+.form-block h3{margin:0 0 8px 0}
+.inline-form{display:flex;gap:8px;flex-wrap:wrap}
+.inline-form input{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);min-width:120px}
+.inline-form button{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+.inline-form button:hover{opacity:0.95}
+
+.muted{color:var(--muted)}
+.small{font-size:0.85rem}
+
+@media (min-width:720px){
+  .forms{grid-template-columns:1fr 1fr}
+}
