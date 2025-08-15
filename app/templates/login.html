@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="shortcut icon" href="/static/tv.jpg" type="image/jpg">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+
+    <a href="{{ url_for('main.home') }}" class="btn-map" title="Carte">
+        <img src="{{ url_for('static', filename='images/earth.png') }}" alt="map" style="width:32px;height:32px;">
+    </a>
+
+    <div class="login-container">
+        <h2>Connexion</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="text" name="identifier" placeholder="Email ou nom d'utilisateur" required
+                value="{{ identifier | default('') }}">
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+            
+        </form>
+        <a href="{{ url_for('auth.signup') }}">Pas encore de compte ? S'inscrire</a>
+        <a href="{{ url_for('auth.reset_request') }}">🔑 Mot de passe oublié ?</a>
+
+    </div>
+</body>
+</html>

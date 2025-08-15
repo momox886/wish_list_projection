@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Désactiver la double authentification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dash.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="twofa-box">
+            <h1>❌ Désactiver la 2FA</h1>
+            <p class="notice">Pour désactiver la double authentification, entre un code valide de ton application 2FA.</p>
+            <form method="POST">
+                <input type="text" name="otp" placeholder="Code 2FA" required maxlength="6">
+                <button type="submit">Désactiver</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

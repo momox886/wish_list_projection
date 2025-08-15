@@ -1,10 +1,16 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from ..models import Item, Cagnotte, Budget, UserData
+from flask_login import login_required
 from .. import db
 
 main = Blueprint('main', __name__)
 
-@main.route("/", methods=["GET", "POST"])
+@main.route("/")
+def home():
+    return render_template("home.html")
+
+@main.route("/index", methods=["GET", "POST"])
+@login_required
 def index():
     items = Item.query.all()
     cagnotte = Cagnotte.query.first()
@@ -44,6 +50,7 @@ def index():
 
 
 @main.route("/add_item", methods=["POST"])
+@login_required
 def add_item():
     nom = request.form.get("nom")
     prix = float(request.form.get("prix"))
@@ -52,6 +59,7 @@ def add_item():
     return redirect(url_for("main.index"))
 
 @main.route("/add_money", methods=["POST"])
+@login_required
 def add_money():
     montant = float(request.form.get("montant"))
     cagnotte = Cagnotte.query.first()
@@ -60,6 +68,7 @@ def add_money():
     return redirect(url_for("main.index"))
 
 @main.route("/delete_item/<int:id>")
+@login_required
 def delete_item(id):
     item = Item.query.get_or_404(id)
     db.session.delete(item)
@@ -67,6 +76,7 @@ def delete_item(id):
     return redirect(url_for("main.index"))
 
 @main.route("/edit_money", methods=["POST"])
+@login_required
 def edit_money():
     nouveau_montant = float(request.form.get("nouveau_montant"))
     cagnotte = Cagnotte.query.first()
@@ -75,6 +85,7 @@ def edit_money():
     return redirect(url_for("main.index"))
 
 @main.route("/set_budget", methods=["POST"])
+@login_required
 def set_budget():
     salaire = float(request.form.get("salaire"))
     depenses = float(request.form.get("depenses"))
@@ -92,6 +103,7 @@ def set_budget():
 
 
 @main.route("/update_finances", methods=["POST"])
+@login_required
 def update_finances():
     salaire = float(request.form.get("salaire_mensuel", 0))
     depenses = float(request.form.get("depenses_mensuelles", 0))

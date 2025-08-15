@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Activer la double authentification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dash.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="twofa-box">
+            <h1>🔒 Activer la 2FA</h1>
+            <p>Scanne le QR code avec Google Authenticator puis entre le code généré :</p>
+            <img src="data:image/png;base64,{{ img_b64 }}" alt="QR Code" class="qr-code">
+            <form method="POST" action="{{ url_for('auth.confirm_2fa') }}">
+                <input type="text" name="otp" placeholder="Code 2FA" required maxlength="6">
+                <button type="submit">Activer</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

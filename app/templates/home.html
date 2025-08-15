@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <style>
+        body {
+            background: #f5f6fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 100px auto;
+            width: 300px;
+            text-align: center;
+            background: #fff;
+            padding: 40px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 25px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue !</h1>
+        <a href="{{ url_for('auth.login') }}" class="btn">Se connecter</a>
+        <a href="{{ url_for('auth.signup') }}" class="btn">S'inscrire</a>
+    </div>
+    <script>
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.style.transform = 'scale(0.97)';
+                setTimeout(() => btn.style.transform = '', 100);
+            });
+        });
+    </script>

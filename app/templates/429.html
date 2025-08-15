@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Erreur 429 - Trop de requêtes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #007BFF, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-align: center;
+      color: white;
+      animation: fadeIn 1.5s ease;
+      max-width: 500px;
+    }
+
+    h1 {
+      font-size: 4em;
+      margin-bottom: 0.3em;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    p {
+      font-size: 1.4em;
+      margin-bottom: 1.5em;
+    }
+
+    .countdown {
+      font-size: 1.5em;
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 12px 25px;
+      border-radius: 12px;
+      margin-top: 1em;
+      display: inline-block;
+      animation: popIn 1s ease;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #00bfff, 0 0 30px #00bfff;
+      }
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #3399ff, 0 0 40px #3399ff;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Erreur 429</h1>
+    <p>Trop de requêtes envoyées.<br>Veuillez patienter avant de réessayer.</p>
+    <div class="countdown" id="timer">Redirection dans 60 secondes...</div>
+  </div>
+
+  <script>
+    let seconds = 60;
+    const timerElement = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+      seconds--;
+      if (seconds > 0) {
+        timerElement.textContent = `Redirection dans ${seconds} seconde${seconds > 1 ? 's' : ''}...`;
+      } else {
+        clearInterval(countdown);
+        window.location.href = "/";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
