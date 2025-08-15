@@ -45,7 +45,7 @@ def signup():
             return redirect(url_for('auth.signup'))
         hashed_pw = generate_password_hash(password)
     
-        new_user = User(email=email, password=hashed_pw, name=name, first_name=first_name, username=username, role=role)
+        new_user = User(email=email, password=hashed_pw, name=name, first_name=first_name, username=username)
 
         db.session.add(new_user)
         db.session.commit()
