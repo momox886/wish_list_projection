@@ -44,7 +44,7 @@ def signup():
             flash("Nom d'utilisateur déjà utilisé.")
             return redirect(url_for('auth.signup'))
         hashed_pw = generate_password_hash(password)
-        role = 'superadmin' if email == 'habibdiallo186@gmail.com' else 'user'
+    
         new_user = User(email=email, password=hashed_pw, name=name, first_name=first_name, username=username, role=role)
 
         db.session.add(new_user)
